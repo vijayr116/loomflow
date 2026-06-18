@@ -28,7 +28,20 @@ class WeaverRepository {
   }
 
   Future<void> updateWeaver(UserModel user) async {
-    await _firestore.collection('users').doc(user.id).update(user.toMap());
+    final userRef = _firestore.collection('users').doc(user.id);
+    final jobsQuery = await _firestore
+        .collection('jobs')
+        .where('weaverId', isEqualTo: user.id)
+        .get();
+
+    final batch = _firestore.batch();
+    batch.update(userRef, user.toMap());
+
+    for (final jobDoc in jobsQuery.docs) {
+      batch.update(jobDoc.reference, {'weaverName': user.name});
+    }
+
+    await batch.commit();
   }
 
   Future<void> deleteWeaver(String id) async {

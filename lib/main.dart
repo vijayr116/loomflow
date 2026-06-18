@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loomflow/core/auth/auth_notifier.dart';
 import 'package:loomflow/core/routes/app_router.dart';
+import 'package:loomflow/core/theme/app_theme.dart';
+import 'package:loomflow/core/theme/theme_bloc.dart';
+import 'package:loomflow/core/theme/theme_state.dart';
 import 'package:loomflow/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:loomflow/features/dashboard/repository/dashboard_repository.dart';
+import 'package:loomflow/features/interview/bloc/iv_bloc.dart';
+import 'package:loomflow/features/interview/repo/iv_repo.dart';
 import 'package:loomflow/features/job/bloc/job_bloc.dart';
 import 'package:loomflow/features/job/repo/job_repository.dart';
 import 'package:loomflow/features/login/bloc/login_bloc.dart';
@@ -36,6 +41,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(create: (_) => ThemeBloc()),
           BlocProvider(
             create: (context) =>
                 LoginBloc(repository: context.read<LoginRepository>()),
@@ -52,10 +58,18 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 DashboardBloc(repository: context.read<DashboardRepository>()),
           ),
+          BlocProvider(create: (context) => IvBloc(repo: IvRepo())),
         ],
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          routerConfig: appRouter.router,
+        child: BlocBuilder<ThemeBloc, ThemeState>(
+          builder: (context, themeState) {
+            return MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              routerConfig: appRouter.router,
+              theme: AppTheme.lightTheme(),
+              darkTheme: AppTheme.darkTheme(),
+              themeMode: themeState.themeMode,
+            );
+          },
         ),
       ),
     );

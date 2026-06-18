@@ -24,6 +24,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       body: BlocBuilder<DashboardBloc, DashboardState>(
         builder: (context, state) {
@@ -47,8 +50,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     padding: const EdgeInsets.all(22),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(24),
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF1E3A8A), Color(0xFF2563EB)],
+                      gradient: LinearGradient(
+                        colors: [
+                          colorScheme.primaryContainer,
+                          colorScheme.primary,
+                        ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -56,27 +62,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Production Overview',
-                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                          style: textTheme.bodyMedium?.copyWith(
+                            color: colorScheme.onPrimaryContainer,
+                          ),
                         ),
 
                         const SizedBox(height: 14),
 
                         Text(
-                          '${state.totalJobs}',
-                          style: const TextStyle(
+                          state.totalJobs.toString(),
+                          style: textTheme.headlineSmall?.copyWith(
                             fontSize: 40,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: colorScheme.onPrimary,
                           ),
                         ),
 
                         const SizedBox(height: 8),
 
-                        const Text(
+                        Text(
                           'Total Jobs Running',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
+                          style: textTheme.bodyMedium?.copyWith(
+                            color: colorScheme.onPrimary,
+                          ),
                         ),
                       ],
                     ),
@@ -97,14 +107,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         title: 'Completed',
                         value: state.completedJobs.toString(),
                         icon: Icons.check_circle,
-                        color: Colors.green,
+                        color: colorScheme.secondary,
                       ),
 
                       _buildStatCard(
                         title: 'Active Weavers',
                         value: state.activeWeavers.toString(),
                         icon: Icons.people,
-                        color: Colors.orange,
+                        color: colorScheme.tertiary,
                       ),
 
                       _buildStatCard(
@@ -112,7 +122,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         value: (state.totalJobs - state.completedJobs)
                             .toString(),
                         icon: Icons.pending_actions,
-                        color: Colors.purple,
+                        color: colorScheme.primary,
                       ),
 
                       _buildStatCard(
@@ -121,7 +131,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ? '0%'
                             : '${((state.completedJobs / state.totalJobs) * 100).toStringAsFixed(0)}%',
                         icon: Icons.trending_up,
-                        color: Colors.red,
+                        color: colorScheme.error,
                       ),
                     ],
                   ),
@@ -129,9 +139,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   const SizedBox(height: 30),
 
                   // ================= QUICK ACTIONS =================
-                  const Text(
+                  Text(
                     'Quick Actions',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: textTheme.titleMedium?.copyWith(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onSurface,
+                    ),
                   ),
 
                   const SizedBox(height: 16),
@@ -142,7 +156,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         child: _buildActionButton(
                           title: 'Create Job',
                           icon: Icons.add_box,
-                          color: Colors.blue,
+                          color: colorScheme.primary,
                           onTap: () {
                             context.go('/jobs?create=true');
                           },
@@ -155,7 +169,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         child: _buildActionButton(
                           title: 'Add Weaver',
                           icon: Icons.person_add,
-                          color: Colors.orange,
+                          color: colorScheme.secondary,
                           onTap: () {
                             context.go('/weavers?create=true');
                           },
@@ -167,9 +181,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   const SizedBox(height: 30),
 
                   // ================= RECENT ACTIVITY =================
-                  const Text(
+                  Text(
                     'Recent Activity',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: textTheme.titleMedium?.copyWith(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onSurface,
+                    ),
                   ),
 
                   const SizedBox(height: 16),
@@ -177,38 +195,66 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: colorScheme.surface,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(.05),
+                          color: colorScheme.shadow.withOpacity(.05),
                           blurRadius: 10,
                           offset: const Offset(0, 4),
                         ),
                       ],
                     ),
                     child: Column(
-                      children: const [
+                      children: [
                         ListTile(
                           contentPadding: EdgeInsets.zero,
                           leading: CircleAvatar(
-                            backgroundColor: Colors.green,
-                            child: Icon(Icons.check, color: Colors.white),
+                            backgroundColor: colorScheme.secondaryContainer,
+                            child: Icon(
+                              Icons.check,
+                              color: colorScheme.onSecondaryContainer,
+                            ),
                           ),
-                          title: Text('Job completed successfully'),
-                          subtitle: Text('2 mins ago'),
+                          title: Text(
+                            'Job completed successfully',
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.onSurface,
+                            ),
+                          ),
+                          subtitle: Text(
+                            '2 mins ago',
+                            style: textTheme.bodySmall?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                            ),
+                          ),
                         ),
 
-                        Divider(),
+                        Divider(
+                          color: colorScheme.onSurfaceVariant.withOpacity(0.12),
+                        ),
 
                         ListTile(
                           contentPadding: EdgeInsets.zero,
                           leading: CircleAvatar(
-                            backgroundColor: Colors.orange,
-                            child: Icon(Icons.people, color: Colors.white),
+                            backgroundColor: colorScheme.primaryContainer,
+                            child: Icon(
+                              Icons.people,
+                              color: colorScheme.onPrimaryContainer,
+                            ),
                           ),
-                          title: Text('New weaver added'),
-                          subtitle: Text('10 mins ago'),
+                          title: Text(
+                            'New weaver added',
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.onSurface,
+                            ),
+                          ),
+                          subtitle: Text(
+                            '10 mins ago',
+                            style: textTheme.bodySmall?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -228,14 +274,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
     required IconData icon,
     required Color color,
   }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.05),
+            color: colorScheme.shadow.withOpacity(.08),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -248,7 +297,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: color.withOpacity(.1),
+              color: color.withOpacity(.15),
               borderRadius: BorderRadius.circular(14),
             ),
             child: Icon(icon, color: color),
@@ -259,9 +308,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               Text(
                 value,
-                style: const TextStyle(
-                  fontSize: 28,
+                style: textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
+                  color: colorScheme.onSurface,
                 ),
               ),
 
@@ -269,7 +318,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
               Text(
                 title,
-                style: const TextStyle(color: Colors.grey, fontSize: 14),
+                style: textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
               ),
             ],
           ),
@@ -299,7 +350,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(height: 10),
             Text(
               title,
-              style: const TextStyle(
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),

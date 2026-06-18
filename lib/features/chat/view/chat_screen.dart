@@ -28,8 +28,12 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     final currentUser = FirebaseAuth.instance.currentUser;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
 
     return Scaffold(
+      backgroundColor: colorScheme.background,
       appBar: AppBar(
         title: Text(widget.weaverName),
         actions: [
@@ -53,7 +57,14 @@ class _ChatScreenState extends State<ChatScreen> {
                 }
 
                 if (state.messages.isEmpty) {
-                  return const Center(child: Text("No messages yet"));
+                  return Center(
+                    child: Text(
+                      "No messages yet",
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  );
                 }
 
                 return ListView.builder(
@@ -74,13 +85,17 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: isMe ? Colors.blue : Colors.grey[300],
+                          color: isMe
+                              ? colorScheme.primary
+                              : colorScheme.surfaceVariant,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           msg.text,
                           style: TextStyle(
-                            color: isMe ? Colors.white : Colors.black,
+                            color: isMe
+                                ? colorScheme.onPrimary
+                                : colorScheme.onSurface,
                           ),
                         ),
                       ),
@@ -99,13 +114,33 @@ class _ChatScreenState extends State<ChatScreen> {
                 Expanded(
                   child: TextField(
                     controller: _controller,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: "Type a message...",
-                      border: OutlineInputBorder(),
+                      filled: true,
+                      fillColor: colorScheme.surface,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide.none,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide(
+                          color: colorScheme.surfaceVariant,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide(color: colorScheme.primary),
+                      ),
                     ),
                   ),
                 ),
                 IconButton(
+                  color: colorScheme.primary,
                   icon: const Icon(Icons.send),
                   onPressed: () {
                     if (_controller.text.trim().isEmpty) return;

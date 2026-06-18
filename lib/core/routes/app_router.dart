@@ -10,6 +10,7 @@ import 'package:loomflow/features/chat/bloc/chat_event.dart';
 import 'package:loomflow/features/chat/repository/chat_repository.dart';
 import 'package:loomflow/features/chat/view/chat_screen.dart';
 import 'package:loomflow/features/dashboard/view/dashboard_screen.dart';
+import 'package:loomflow/features/interview/view/iv_view.dart';
 import 'package:loomflow/features/job/view/job_details_screen.dart';
 import 'package:loomflow/features/job/view/job_screen.dart';
 import 'package:loomflow/features/login/view/login_page.dart';
@@ -46,6 +47,11 @@ class AppRouter {
           ),
 
           GoRoute(path: '/jobs', builder: (c, s) => const JobListScreen()),
+
+          GoRoute(
+            path: '/ivscreen',
+            builder: (context, state) => const IvView(),
+          ),
 
           GoRoute(
             path: '/weavers',

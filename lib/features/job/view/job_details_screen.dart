@@ -24,13 +24,12 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
       appBar: AppBar(
         title: const Text("Job Detail"),
         actions: [
-          IconButton(
-            onPressed: () {
-              context.push('/chat', extra: widget.initialJob);
-            },
-            icon: Icon(Icons.chat),
-          ),
-
+          // IconButton(
+          //   onPressed: () {
+          //     context.push('/chat', extra: widget.initialJob);
+          //   },
+          //   icon: Icon(Icons.chat),
+          // ),
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
