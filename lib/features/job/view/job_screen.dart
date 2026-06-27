@@ -466,11 +466,11 @@ class _JobListScreenState extends State<JobListScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showDialog(context),
-        icon: const Icon(Icons.add),
-        label: const Text('New Job'),
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () => _showDialog(context),
+      //   icon: const Icon(Icons.add),
+      //   label: const Text('New Job'),
+      // ),
     );
   }
 

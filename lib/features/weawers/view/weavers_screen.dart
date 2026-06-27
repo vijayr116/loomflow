@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loomflow/core/common/loading_screen.dart';
 import 'package:loomflow/features/weawers/bloc/weaver_bloc.dart';
 import 'package:loomflow/features/weawers/bloc/weaver_event.dart';
 import 'package:loomflow/features/weawers/bloc/weaver_state.dart';
@@ -139,7 +140,8 @@ class _WeaverListScreenState extends State<WeaverListScreen> {
               child: BlocBuilder<WeaverBloc, WeaverState>(
                 builder: (context, state) {
                   if (state.status == WeaverStatus.loading) {
-                    return _buildLoadingState(context);
+                    // return _buildLoadingState(context);
+                    return LoomLoadingWidget();
                   }
 
                   final filteredWeavers = _filterWeavers(state.weavers);
@@ -211,12 +213,12 @@ class _WeaverListScreenState extends State<WeaverListScreen> {
         ),
       ),
 
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showWeaverDialog(context),
-        icon: const Icon(Icons.add),
-        label: const Text("Add Weaver"),
-        elevation: 6,
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () => _showWeaverDialog(context),
+      //   icon: const Icon(Icons.add),
+      //   label: const Text("Add Weaver"),
+      //   elevation: 6,
+      // ),
     );
   }
 
